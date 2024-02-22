@@ -146,6 +146,7 @@ def forms():
                 locations = get_itinerary(city, days, mode, view)
             except Exception as e:
                 st.write(":red[Failed to retrieve]")
+                st.write(e)
                 sleep(5)
                 toggle_show()
                 exit(1)
