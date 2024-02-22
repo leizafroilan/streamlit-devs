@@ -2,7 +2,7 @@ from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import json
 from time import sleep
 from img_getter import brave_search
@@ -10,11 +10,12 @@ from records import create_records, get_records
 
 
 def get_itinerary(city, days, mode, view):
-    load_dotenv()
+    # load_dotenv()
 
-    llm = OpenAI(model_name="gpt-3.5-turbo-instruct",
-                    temperature=0, 
-                    max_tokens = 3072)
+    llm = OpenAI(openai_api_key="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",
+                model_name="gpt-3.5-turbo-instruct",
+                temperature=1, 
+                max_tokens = 3072)
 
 
     template = """
@@ -56,7 +57,7 @@ def get_itinerary(city, days, mode, view):
         if not img:
             print(f"image not found for {loc['location']}")
             img = brave_search(loc["location"]) 
-            # create_records(loc["location"], img)
+            create_records(loc["location"], img)
             sleep(2)
 
         summary["itinerary"][index]["photo"] = img
