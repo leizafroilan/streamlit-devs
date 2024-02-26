@@ -3,7 +3,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.output_parsers import PydanticOutputParser
 from dotenv import load_dotenv
-import streamlit
+import streamlit as st
 import json
 from schemas import Summary
 from time import sleep
