@@ -9,10 +9,11 @@ def create_records(location: str, image: str):
     
     df = pd.read_csv(filepath)
     data =  df.to_dict(orient='records')
-
+    
 
     for d in data:
-        if location.lower() in d["location"].lower():
+        entry = str(d["location"])
+        if location.lower() in entry.lower():
             return 
 
     new_data = {"location": location, "image": image, "age": datetime.now()}
@@ -27,7 +28,8 @@ def get_records(location: str):
     data =  df.to_dict(orient='records')
 
     for d in data:
-        if location.lower() in d["location"].lower():
+        entry = str(d["location"])
+        if location.lower() == entry.lower():
             return d["image"]
 
     return None    

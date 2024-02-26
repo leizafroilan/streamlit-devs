@@ -1,5 +1,4 @@
 import streamlit as st
-from PIL import Image
 import os
 from time import sleep
 from get_itinerary import get_itinerary
@@ -109,7 +108,9 @@ def forms():
     st.sidebar.page_link("main.py", label="Home")
     st.sidebar.page_link("pages/create_itinerary_ui.py", label="Create Itinerary")
     st.sidebar.page_link("pages/about.py", label="About this App")
-    
+
+
+
     if "boolean" not in st.session_state:
         st.session_state.boolean = False
     if "city" not in st.session_state:
@@ -144,6 +145,7 @@ def forms():
         with st.spinner(":blue[Brace yourselves, the adventure blueprint is coming together... ]"):
             try:
                 locations = get_itinerary(city, days, mode, view)
+
             except Exception as e:
                 st.write(":red[Failed to retrieve]")
                 st.write(e)
@@ -164,7 +166,7 @@ def forms():
             st.markdown(f"""<div class='parent-container'>
                                 <div class="top-row">
                                     <div class='column1'>
-                                        <h3>{location['day']} - {location['location']}</h3>
+                                        <h3>{location['title']}</h3>
                                         <p>Distance: {location['distance']}</p>
                                     </div> 
                                     <div class='column3'> 

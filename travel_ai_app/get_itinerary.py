@@ -1,65 +1,80 @@
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-from langchain.chains import SequentialChain
-# from dotenv import load_dotenv
+from langchain.output_parsers import PydanticOutputParser
+from dotenv import load_dotenv
 import json
+from schemas import Summary
 from time import sleep
 from img_getter import brave_search
 from records import create_records, get_records
 
 
 def get_itinerary(city, days, mode, view):
-    # load_dotenv()
+    load_dotenv()
 
-    llm = OpenAI(openai_api_key="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",
-                model_name="gpt-3.5-turbo-instruct",
-                temperature=1, 
-                max_tokens = 3072)
+    llm = OpenAI(model_name="gpt-3.5-turbo-instruct",
+                    temperature=1, 
+                    max_tokens = 3072)
 
+    parser = PydanticOutputParser(pydantic_object=Summary)
+
+    temp = []
 
     template = """
-
-        This following needs t o be in json format with key - summary
-        ----
-        Provide a brief summary or description of the {location}
-        ----
-
-        The following should be on json format with keys - itinerary, day, location, 
-        photo (leave it blank/empty), review, distance
-        ----
+        Provide a brief summary/historical and current events of the {location} 
+        
         Provide an itinerary based on the {location} for a {days}-day trip.
-        Traveller is traveling {mode} and wants to see 
-        {view}. Make a section for each day and location, then provide a detailed description of each section.
-        Provide distance (how many minutes) from the last location to the new location with means of transportation 
-        if possible. Make the distance more descriptive and include directions how to get to the location'
-        ----
-
-        Max token is 3072, adjust output to 3072 tokens if it exceeds. 
+        Traveller is traveling {mode} and wants to see {view}. 
+        Make a section for each day and location, then provide a detailed description of each section.
+        Provide distance (how many minutes) and directions how to get to the new location 
+        with means of transportation if possible. 
+        Make the distance more descriptive.
 
         Consider the demography of the location, if distance between locations cannot be reached by bus 
-        in 1 day, exclude the location
+        in 6 hours, exclude the location.
+        
+        Provide these as if you are a tourist guide
+        \n{format_instructions}\n
     """
-
-
-    prompt = PromptTemplate(input_variables=["location","days", "mode", "view"],
-                                template=template)
-    chain = LLMChain(llm=llm, prompt=prompt, output_key="review")
-
-    raw_summary = chain.invoke({"location": city, "days": days, "mode": mode, "view": view})
-
-    summary = json.loads(raw_summary["review"])
+    prompt = PromptTemplate(
+        template=template,
+        input_variables=["location", "days", "mode", "view"],
+        partial_variables={"format_instructions": parser.get_format_instructions()},
+    )
     
-    for index, loc in enumerate(summary["itinerary"]):
+    # And a query intended to prompt a language model to populate the data structure.
+    prompt_and_model = prompt | llm
+    output = prompt_and_model.invoke({
+                                "location": city, 
+                                "days": days, 
+                                "mode": mode,
+                                "view": view
+                                })
+    summary = parser.invoke(output)
+    print(summary)
+    for loc in summary.details:
 
-        img = get_records(loc["location"])
+        img = get_records(loc.location)
 
         if not img:
-            print(f"image not found for {loc['location']}")
-            img = brave_search(loc["location"]) 
-            create_records(loc["location"], img)
+            print(f"image not found for {loc.location}")
+            img = brave_search(loc.location) 
+            create_records(loc.location, img)
             sleep(2)
 
-        summary["itinerary"][index]["photo"] = img
+        entry = {
+              "title": f"{loc.day} - {loc.location}",
+              "distance": loc.distance,
+              "review": loc.review,
+              "photo": img
+            }
+        temp.append(entry)
+    
+    payload = {"summary": summary.summary, "itinerary": temp}
 
-    return summary
+    return payload
+
+
+
+

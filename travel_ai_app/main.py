@@ -2,16 +2,13 @@ import streamlit as st
 
 
 def main():
-    st.markdown(
-            """
-            <style>
-            .sidebar-content div[data-testid="stSidebar"][aria-expanded="false"] > div:last-child > div > div:last-child {
-                display: none;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+
+    st.session_state.boolean = False
+    st.session_state.city = None
+    st.session_state.days = 1
+    st.session_state.view = None
+    st.session_state.mode = None
+
     st.header(":blue[Travel Agent AI]", divider="blue")
     st.sidebar.page_link("main.py", label="Home")
     st.sidebar.page_link("pages/create_itinerary_ui.py", label="Create Itinerary")
