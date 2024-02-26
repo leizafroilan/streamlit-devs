@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 # filepath = os.path.join(os.getcwd(), "files", "records.csv")
-filepath = os.path.join("/mount/src/streamlit-devs", "files", "records.csv")
+filepath = os.path.join("travel_ai_app", "files", "records.csv")
 
 def create_records(location: str, image: str):
     
