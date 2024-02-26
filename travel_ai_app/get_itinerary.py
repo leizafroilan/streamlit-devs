@@ -3,6 +3,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.output_parsers import PydanticOutputParser
 from dotenv import load_dotenv
+import streamlit
 import json
 from schemas import Summary
 from time import sleep
@@ -12,6 +13,8 @@ from records import create_records, get_records
 
 def get_itinerary(city, days, mode, view):
     load_dotenv()
+
+    os.environ["OPENAI_API_KEY"] = st.secrets["my_secrets"]["OPENAI_API_KEY"]
 
     llm = OpenAI(model_name="gpt-3.5-turbo-instruct",
                     temperature=1, 
