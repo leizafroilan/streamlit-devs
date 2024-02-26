@@ -101,6 +101,7 @@ def toggle_show():
     st.session_state.days = None
     st.session_state.view = None
     st.session_state.mode = None
+    st.session_state.count = 0
 
 def forms():
 
@@ -109,18 +110,19 @@ def forms():
     st.sidebar.page_link("pages/create_itinerary_ui.py", label="Create Itinerary")
     st.sidebar.page_link("pages/about.py", label="About this App")
 
-    count = 0
 
     if "boolean" not in st.session_state:
         st.session_state.boolean = False
     if "city" not in st.session_state:
         st.session_state.city = None
     if "days" not in st.session_state:
-        st.session_state.days = 1
+        st.session_state.days = None
     if "view" not in st.session_state:
         st.session_state.view = None
     if "mode" not in st.session_state:
         st.session_state.mode = None
+    if "count" not in st.session_state:
+        st.session_state.count = 0
     
 
     if not st.session_state.boolean:
