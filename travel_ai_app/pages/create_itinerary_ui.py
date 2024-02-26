@@ -110,7 +110,7 @@ def forms():
     st.sidebar.page_link("pages/about.py", label="About this App")
 
 
-
+    count =
     if "boolean" not in st.session_state:
         st.session_state.boolean = False
     if "city" not in st.session_state:
@@ -145,12 +145,16 @@ def forms():
         with st.spinner(":blue[Brace yourselves, the adventure blueprint is coming together... ]"):
             try:
                 locations = get_itinerary(city, days, mode, view)
-
+             
             except Exception as e:
-                st.write(":red[Failed to retrieve]")
-                st.write(e)
-                sleep(5)
-                toggle_show()
+                if count < 2:
+                    count +=1
+                    locations = get_itinerary(city, days, mode, view)
+                else:
+                    st.write(":red[Failed to retrieve]")
+                    st.write(e)
+                    sleep(5)
+                    toggle_show()
                 exit(1)
         
         placeholder = st.empty()
