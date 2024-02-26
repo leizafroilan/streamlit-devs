@@ -109,8 +109,8 @@ def forms():
     st.sidebar.page_link("pages/create_itinerary_ui.py", label="Create Itinerary")
     st.sidebar.page_link("pages/about.py", label="About this App")
 
+    count = 0
 
-    count =
     if "boolean" not in st.session_state:
         st.session_state.boolean = False
     if "city" not in st.session_state:
@@ -148,7 +148,7 @@ def forms():
              
             except Exception as e:
                 if count < 2:
-                    count = count+1
+                    count +=1
                     locations = get_itinerary(city, days, mode, view)
                 else:
                     st.write(":red[Failed to retrieve]")
