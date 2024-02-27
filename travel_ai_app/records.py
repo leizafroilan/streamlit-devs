@@ -3,7 +3,10 @@ import os
 from datetime import datetime
 
 
+# Local file path
 # filepath = os.path.join(os.getcwd(), "files", "records.csv")
+
+# Remote repo file path
 filepath = os.path.join("travel_ai_app", "files", "records.csv")
 
 def create_records(location: str, image: str):

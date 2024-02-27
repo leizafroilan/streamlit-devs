@@ -51,8 +51,7 @@ css_style = """
             height: 100%;
             flex-direction: column;
             justify-content: center;
-            padding-left: 10px;
-           
+            padding-left: 10px; 
         }
         .image-container {
             width: 300px; 
@@ -68,6 +67,7 @@ css_style = """
             height: 100%;
             object-fit: cover; 
             position: absolute;
+            text-align: center;
             top: 0;
             left: 0;
         }        
@@ -86,7 +86,48 @@ css_style = """
         margin: 0; /* Remove default margins for paragraphs */
         font-size: 14px; /* Adjust font size */
         line-height: 1.5; /* Adjust line height for readability */
+    }
+    @media (max-width: 540px) {
+        .parent-container  {
+            padding: 0;
+        }
+        .top-row {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .bottom-row {
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column;
 }
+        }
+        .column1 {
+            padding: 0;
+            line-height: 1;
+        }
+        .column2 {
+            border-right: 0;
+            padding: 0px 0px 10px 0px;
+        }
+        .column4 {
+            border-top: 2px solid blue;
+            padding: 10px 0px 0px 0px;
+        }
+        .image-container {
+            display: flex; /* Add this */
+            justify-content: center; /* Add this */
+            align-items: center; /* Add this */
+        }
+
+        .image-container img {
+            max-width: 100%; /* Change width to max-width */
+            max-height: 100%; /* Change height to max-height */
+            object-fit: cover; 
+        }
+    }
     </style>
     """
 
@@ -147,10 +188,10 @@ def forms():
         with st.spinner(":blue[Brace yourselves, the adventure blueprint is coming together... ]"):
             try:
                 locations = get_itinerary(city, days, mode, view)
-             
+                st.session_state.count = 0
             except Exception as e:
-                if count < 2:
-                    count +=1
+                if st.session_state.count < 2:
+                    st.session_state.count +=1
                     locations = get_itinerary(city, days, mode, view)
                 else:
                     st.write(":red[Failed to retrieve]")
@@ -175,7 +216,7 @@ def forms():
                                         <h3>{location['title']}</h3>
                                         <p>Distance: {location['distance']}</p>
                                     </div> 
-                                    <div class='column3'> 
+                                        <div class='column3'> 
                                     </div>
                                 </div>
                                 <div class="bottom-row">

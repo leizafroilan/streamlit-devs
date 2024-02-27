@@ -63,7 +63,7 @@ def get_itinerary(city, days, mode, view):
         if not img:
             print(f"image not found for {loc.location}")
             img = brave_search(loc.location) 
-            # create_records(loc.location, img)
+            create_records(loc.location, img)
             sleep(2)
 
         entry = {
