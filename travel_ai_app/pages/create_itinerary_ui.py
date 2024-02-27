@@ -87,6 +87,7 @@ css_style = """
         font-size: 14px; /* Adjust font size */
         line-height: 1.5; /* Adjust line height for readability */
     }
+
     @media (max-width: 540px) {
         .parent-container  {
             padding: 0;
@@ -102,32 +103,33 @@ css_style = """
             justify-content: center; 
             align-items: center; 
             flex-direction: column;
-}
         }
         .column1 {
             padding: 0;
             line-height: 1;
+            text-align: center;
         }
         .column2 {
             border-right: 0;
-            padding: 0px 0px 10px 0px;
+            padding: 0px 0px 20px 0px;
         }
         .column4 {
             border-top: 2px solid blue;
             padding: 10px 0px 0px 0px;
         }
         .image-container {
-            display: flex; /* Add this */
-            justify-content: center; /* Add this */
-            align-items: center; /* Add this */
+            display: flex; 
+            justify-content: center;
+            align-items: center;
         }
-
         .image-container img {
-            max-width: 100%; /* Change width to max-width */
-            max-height: 100%; /* Change height to max-height */
+            max-width: 100%;
+            max-height: 100%;
             object-fit: cover; 
         }
     }
+    
+}
     </style>
     """
 
